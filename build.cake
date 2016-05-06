@@ -156,6 +156,9 @@ Task("Package")
 
 Task("Publish")
 	.IsDependentOn("Package");
+	
+Task("Default")
+	.IsDependentOn("Package");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTION
