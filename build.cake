@@ -74,12 +74,6 @@ Task("Version")
 		GitVersion(new GitVersionSettings {
 			UpdateAssemblyInfo = true
 		});
-		GitReleaseNotes("./ReleaseNotes.md", new GitReleaseNotesSettings {
-			WorkingDirectory = Context.Environment.WorkingDirectory,
-			AllTags = true,
-			Version = versionInfo.FullSemVer,
-			AllLabels = true
-		});
 	});
 
 Task("Build")
