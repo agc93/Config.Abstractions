@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Configuration.Abstractions</id>
+    <title>Configuration Model Abstractions</title>
+    <authors>Alistair Chapman</authors>
+    <owners>achapman</owners>
+    <licenseUrl>https://github.com/agc93/Configuration.Abstractions/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/agc93/Configuration.Abstractions</projectUrl>
+    <iconUrl>https://maxcdn.icons8.com/windows10/PNG/96/Programming/administrative_tools-96.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A basic configuration model abstraction designed to simplify development by allowing changes in underlying configuration at any time.</description>
+    <summary>Simple abstraction models to decouple your app and configuration</summary>
+    <copyright>Copyright 2016 A Chapman - Icon by Icons8</copyright>
+    <tags>configuration object model interface settings</tags>
+  </metadata>
+</package>

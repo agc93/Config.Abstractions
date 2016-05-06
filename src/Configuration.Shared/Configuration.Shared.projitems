@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>04c0736a-1543-458b-b0b1-05b394f60d32</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Configuration.Abstractions</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ConfigManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IConfigManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IConfigSource.cs" />
+  </ItemGroup>
+</Project>
