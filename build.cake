@@ -2,6 +2,7 @@
 #tool "DocCreator"
 #tool "xunit.runner.console"
 #addin "Cake.DocCreator"
+#tool "GitReleaseNotes"
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -29,16 +30,16 @@ GitVersion versionInfo = null;
 
 Setup(() =>
 {
-    // Executed BEFORE the first task.
-    Information("Running tasks...");
+	// Executed BEFORE the first task.
+	Information("Running tasks...");
 	versionInfo = GitVersion();
 	Information("Building for version {0}", versionInfo.FullSemVer);
 });
 
 Teardown(() =>
 {
-    // Executed AFTER the last task.
-    Information("Finished running tasks.");
+	// Executed AFTER the last task.
+	Information("Finished running tasks.");
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,25 +47,25 @@ Teardown(() =>
 ///////////////////////////////////////////////////////////////////////////////
 
 Task("Clean")
-    .Does(() =>
+	.Does(() =>
 {
-    // Clean solution directories.
-    foreach(var path in projectPaths)
-    {
-        Information("Cleaning {0}", path);
-        CleanDirectories(path + "/**/bin/" + configuration);
-        CleanDirectories(path + "/**/obj/" + configuration);
-    }
-    Information("Cleaning common files...");
-    CleanDirectory(artifacts);
+	// Clean solution directories.
+	foreach(var path in projectPaths)
+	{
+		Information("Cleaning {0}", path);
+		CleanDirectories(path + "/**/bin/" + configuration);
+		CleanDirectories(path + "/**/obj/" + configuration);
+	}
+	Information("Cleaning common files...");
+	CleanDirectory(artifacts);
 });
 
 Task("Restore")
-    .Does(() =>
+	.Does(() =>
 {
-    // Restore all NuGet packages.
-    Information("Restoring solution...");
-    NuGetRestore(solutionPath);
+	// Restore all NuGet packages.
+	Information("Restoring solution...");
+	NuGetRestore(solutionPath);
 });
 
 Task("Version")
@@ -73,13 +74,19 @@ Task("Version")
 		GitVersion(new GitVersionSettings {
 			UpdateAssemblyInfo = true
 		});
+		GitReleaseNotes("./ReleaseNotes.md", new GitReleaseNotesSettings {
+			WorkingDirectory = Context.Environment.WorkingDirectory,
+			AllTags = true,
+			Version = versionInfo.FullSemVer,
+			AllLabels = true
+		});
 	});
 
 Task("Build")
-    .IsDependentOn("Clean")
-    .IsDependentOn("Restore")
+	.IsDependentOn("Clean")
+	.IsDependentOn("Restore")
 	.IsDependentOn("Version")
-    .Does(() =>
+	.Does(() =>
 {
 	Information("Building solution...");
 	MSBuild(solutionPath, settings =>
@@ -91,10 +98,10 @@ Task("Build")
 });
 
 Task("Copy-Files")
-    .IsDependentOn("Build")
-    .Does(() =>
+	.IsDependentOn("Build")
+	.Does(() =>
 {
-    CreateDirectory(artifacts + "build");
+	CreateDirectory(artifacts + "build");
 	foreach (var project in projects) {
 		CreateDirectory(artifacts + "build/" + project.Name);
 		var files = GetFiles(project.Path.GetDirectory() + "/bin/" + configuration +"/" + project.Name + ".*");
@@ -104,20 +111,20 @@ Task("Copy-Files")
 });
 
 Task("Run-Unit-Tests")
-    .IsDependentOn("Build")
-    .Does(() =>
+	.IsDependentOn("Build")
+	.Does(() =>
 {
-    CreateDirectory(testResultsPath);
+	CreateDirectory(testResultsPath);
 
-    var settings = new XUnit2Settings {
-        NoAppDomain = true,
+	var settings = new XUnit2Settings {
+		NoAppDomain = true,
 		XmlReport = true,
 		HtmlReport = true,
-        OutputDirectory = testResultsPath,
-    };
-    settings.ExcludeTrait("Category", "Integration");
+		OutputDirectory = testResultsPath,
+	};
+	settings.ExcludeTrait("Category", "Integration");
 
-    XUnit2(testAssemblies, settings);
+	XUnit2(testAssemblies, settings);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
