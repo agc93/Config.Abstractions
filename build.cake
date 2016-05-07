@@ -138,12 +138,16 @@ Task("Package")
 								Symbols				 = false,
 								NoPackageAnalysis	   = true,
 								Files				   = new [] {
-																	 new NuSpecContent { Source = ca + ".Net45/" + ca + ".Net45.dll", Target = "lib/net45" },
-																	 new NuSpecContent { Source = ca + ".Portable/" + ca + ".Portable.dll", Target = "lib/dotnet5.4" },
-																	 new NuSpecContent { 
-																		 Source = ca + ".Portable/" + ca + ".Portable.dll",
-																		 Target = "lib/portable-net45+netcore45+win8+wp81+dnxcore50"
-																		 }
+																	new NuSpecContent { Source = ca + ".Net45/" + ca + ".Net45.dll", Target = "lib/net45" },
+																	new NuSpecContent { Source = ca + ".Portable/" + ca + ".Portable.dll", Target = "lib/dotnet5.4" },
+																	new NuSpecContent { 
+																		Source = ca + ".Portable/" + ca + ".Portable.dll",
+																		Target = "lib/portable-net45+netcore45+win8+wp81+dnxcore50"
+																		},
+																	new NuSpecContent { 
+																		Source = ca + ".Universal/" + ca + ".Universal.dll",
+																		Target = "lib/uap"
+																		}
 																  },
 								BasePath				= artifacts + "build",
 								OutputDirectory		 = outDir
