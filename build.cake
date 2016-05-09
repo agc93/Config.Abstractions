@@ -11,6 +11,7 @@
 var target = Argument<string>("target", "Publish");
 var configuration = Argument<string>("configuration", "Release");
 var artifacts = Argument<string>("artifacts", "./artifacts/");
+var isRelease = Argument<bool>("release", false);
 
 ///////////////////////////////////////////////////////////////////////////////
 // GLOBAL VARIABLES
@@ -132,8 +133,9 @@ Task("Package")
 		CreateDirectory(outDir);
 		var ca = "Configuration.Abstractions";
 		var specs = GetFiles("./*.nuspec");
+		var v = isRelease ? versionInfo.MajorMinorPatch : versionInfo.NuGetVersionV2;
 		var nuGetPackSettings  = new NuGetPackSettings {
-								Version				 = versionInfo.NuGetVersionV2,
+								Version				 = v,
 								ReleaseNotes			= new [] { "Migrated to new repository and package format" },
 								Symbols				 = false,
 								NoPackageAnalysis	   = true,
