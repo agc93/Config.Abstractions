@@ -11,6 +11,7 @@
 var target = Argument<string>("target", "Publish");
 var configuration = Argument<string>("configuration", "Release");
 var artifacts = Argument<string>("artifacts", "./artifacts/");
+var isRelease = Argument<bool>("release", false);
 
 ///////////////////////////////////////////////////////////////////////////////
 // GLOBAL VARIABLES
@@ -132,18 +133,23 @@ Task("Package")
 		CreateDirectory(outDir);
 		var ca = "Configuration.Abstractions";
 		var specs = GetFiles("./*.nuspec");
+		var v = isRelease ? versionInfo.MajorMinorPatch : versionInfo.NuGetVersionV2;
 		var nuGetPackSettings  = new NuGetPackSettings {
-								Version				 = versionInfo.NuGetVersionV2,
+								Version				 = v,
 								ReleaseNotes			= new [] { "Migrated to new repository and package format" },
 								Symbols				 = false,
 								NoPackageAnalysis	   = true,
 								Files				   = new [] {
-																	 new NuSpecContent { Source = ca + ".Net45/" + ca + ".Net45.dll", Target = "lib/net45" },
-																	 new NuSpecContent { Source = ca + ".Portable/" + ca + ".Portable.dll", Target = "lib/dotnet5.4" },
-																	 new NuSpecContent { 
-																		 Source = ca + ".Portable/" + ca + ".Portable.dll",
-																		 Target = "lib/portable-net45+netcore45+win8+wp81+dnxcore50"
-																		 }
+																	new NuSpecContent { Source = ca + ".Net45/" + ca + ".Net45.dll", Target = "lib/net45" },
+																	new NuSpecContent { Source = ca + ".Portable/" + ca + ".Portable.dll", Target = "lib/dotnet5.4" },
+																	new NuSpecContent { 
+																		Source = ca + ".Portable/" + ca + ".Portable.dll",
+																		Target = "lib/portable-net45+netcore45+win8+wp81+dnxcore50"
+																		},
+																	new NuSpecContent { 
+																		Source = ca + ".Universal/" + ca + ".Universal.dll",
+																		Target = "lib/uap"
+																		}
 																  },
 								BasePath				= artifacts + "build",
 								OutputDirectory		 = outDir
